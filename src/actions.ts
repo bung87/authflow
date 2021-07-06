@@ -86,7 +86,7 @@ function fetchStatusRequest() {
  * @returns Thunk function
  */
 export function fetchLogin<T>(def: Deferred<T>) {
-  return (dispatch: dispatchFunc, _: () => any) => {
+  return (dispatch: dispatchFunc) => {
     dispatch(fetchLoginRequest())
     return def.promise
       .then(des => {
@@ -109,7 +109,7 @@ export function fetchLogin<T>(def: Deferred<T>) {
  * @returns Thunk function
  */
  export function fetchCode<T>(def: Deferred<T>) {
-    return (dispatch: dispatchFunc, _: () => any) => {
+    return (dispatch: dispatchFunc) => {
       dispatch(fetchCodeRequest())
       return def.promise
         .then(des => {
@@ -132,19 +132,19 @@ export function fetchLogin<T>(def: Deferred<T>) {
  * @returns Thunk function
  */
  export function fetchStatus<T>(def: Deferred<T>) {
-    return (dispatch:dispatchFunc, _: () => any) => {
-      dispatch(fetchCodeRequest())
+    return (dispatch:dispatchFunc) => {
+      dispatch(fetchStatusRequest())
       return def.promise
         .then(des => {
-          dispatch(fetchCodeSuccess(des))
+          dispatch(fetchStatusSuccess(des))
           def.resolve(des)
         })
         .catch(ex => {
-          dispatch(fetchCodeFailure(ex))
+          dispatch(fetchStatusFailure(ex))
           def.reject(ex)
         })
         .finally(() => {
-          dispatch(fetchCodeFinal())
+          dispatch(fetchStatusFinal())
         })
     }
   }
