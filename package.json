@@ -24,7 +24,8 @@
     "build:min": "cross-env NODE_ENV=production MINIFY=1 rollup -c -f umd -o dist/index.min.js",
     "lint": "eslint \"src/**/*\" \"__tests__/**/*\"",
     "lint:fix": "eslint --fix \"src/**/*\" \"__tests__/**/*\"",
-    "test": "cross-env NODE_ENV=test jest"
+    "test": "cross-env NODE_ENV=test jest",
+    "prepare": "husky install"
   },
   "dependencies": {
     "ts-deferred": "^1.0.4"
@@ -57,7 +58,7 @@
     "eslint-plugin-jsx-a11y": "^6.3.1",
     "eslint-plugin-react": "^7.20.6",
     "fs-extra": "^9.0.1",
-    "husky": "^4.2.5",
+    "husky": "^7.0.1",
     "istanbul-instrumenter-loader": "^3.0.1",
     "jest": "^26.4.2",
     "jest-fetch-mock": "^3.0.3",
@@ -90,7 +91,10 @@
     }
   },
   "lint-staged": {
-    "*": ["eslint","prettier --write"]
+    "*": [
+      "eslint",
+      "prettier --write"
+    ]
   },
   "commitlint": {
     "extends": [
