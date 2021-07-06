@@ -1,6 +1,4 @@
-// import promised from 'chai-as-promised';
 import nock from 'nock'
-// chai.use(promised);
 import chai from 'chai'
 const expect = chai.expect
 import { applyMiddleware } from 'redux'
