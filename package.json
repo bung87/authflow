@@ -45,14 +45,7 @@
     "@types/assert": "^1.5.1",
     "@types/chai": "^4.2.19",
     "@types/jest": "^26.0.13",
-    "@types/json-stringify-safe": "^5.0.0",
-    "@types/koa": "^2.13.1",
-    "@types/koa-router": "^7.4.2",
-    "@types/koa-static": "^4.0.1",
-    "@types/koa__cors": "^3.0.2",
     "@types/node-fetch": "^2.5.10",
-    "@types/redux": "^3.6.0",
-    "@types/wechat-miniprogram": "^3.1.0",
     "@typescript-eslint/eslint-plugin": "^4.28.2",
     "@typescript-eslint/parser": "^4.28.2",
     "babel-eslint": "^10.1.0",
@@ -77,7 +70,7 @@
     "node-fetch": "^2.6.1",
     "nodemon": "^2.0.7",
     "power-assert": "^1.6.1",
-    "prettier": "2.3.2",
+    "prettier": "^2.3.2",
     "redux-thunk": "^2.3.0",
     "rollup": "^2.26.5",
     "rollup-plugin-terser": "^7.0.0",
@@ -86,15 +79,18 @@
     "ts-jest": "^26.3.0",
     "ts-loader": "^8.0.3",
     "ts-node": "^9.1.1",
-    "typescript": "^4.0.2",
-    "webpack": "^4.44.1",
-    "webpack-espower-loader": "^2.0.0"
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-plugin-prettier": "^2.3.0",
+    "typescript": "^4.0.2"
   },
   "husky": {
     "hooks": {
       "commit-msg": "commitlint -e .git/COMMIT_EDITMSG",
-      "pre-commit": "npm run lint &&  lint-staged"
+      "pre-commit": "lint-staged"
     }
+  },
+  "lint-staged": {
+    "*": ["eslint","prettier --write"]
   },
   "commitlint": {
     "extends": [
