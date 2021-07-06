@@ -84,8 +84,7 @@
   },
   "husky": {
     "hooks": {
-      "commit-msg": "commitlint -e .git/COMMIT_EDITMSG",
-      "pre-commit": "lint-staged"
+      "commit-msg": "commitlint -e .git/COMMIT_EDITMSG"
     }
   },
   "lint-staged": {
