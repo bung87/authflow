@@ -1,6 +1,5 @@
 {
   "**/*.+(js|jsx|ts|tsx|css|less|scss|ts|tsx|md)": [
-    "prettier --write",
-    "git add"
+    "prettier --write"
   ]
 }
