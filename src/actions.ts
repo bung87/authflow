@@ -1,6 +1,7 @@
 import AuthFlowActions from './action_types'
 import { Deferred } from 'ts-deferred'
-import { AnyAction } from 'redux'
+// import { AnyAction } from 'redux'
+type dispatchFunc = (action: any) => any // (action: AnyAction) => AnyAction
 function fetchLoginRequest() {
   return {
     type: AuthFlowActions.loginRequest,
@@ -53,13 +54,39 @@ function fetchCodeFailure(playload: any) {
   }
 }
 
+function fetchStatusRequest() {
+    return {
+      type: AuthFlowActions.statusRequest,
+    }
+  }
+  
+  function fetchStatusFinal() {
+    return {
+      type: AuthFlowActions.statusRequestFinal,
+    }
+  }
+  
+  function fetchStatusSuccess(playload: any) {
+    return {
+      type: AuthFlowActions.statusRequestSuccess,
+      playload,
+    }
+  }
+  
+  function fetchStatusFailure(playload: any) {
+    return {
+      type: AuthFlowActions.statusRequestFailure,
+      playload,
+    }
+  }
+
 /**
  *
  * @param def Deferred
  * @returns Thunk function
  */
 export function fetchLogin<T>(def: Deferred<T>) {
-  return (dispatch: (action: AnyAction) => AnyAction, _: () => any) => {
+  return (dispatch: dispatchFunc, _: () => any) => {
     dispatch(fetchLoginRequest())
     return def.promise
       .then(des => {
@@ -82,7 +109,30 @@ export function fetchLogin<T>(def: Deferred<T>) {
  * @returns Thunk function
  */
  export function fetchCode<T>(def: Deferred<T>) {
-    return (dispatch: (action: AnyAction) => AnyAction, _: () => any) => {
+    return (dispatch: dispatchFunc, _: () => any) => {
+      dispatch(fetchCodeRequest())
+      return def.promise
+        .then(des => {
+          dispatch(fetchCodeSuccess(des))
+          def.resolve(des)
+        })
+        .catch(ex => {
+          dispatch(fetchCodeFailure(ex))
+          def.reject(ex)
+        })
+        .finally(() => {
+          dispatch(fetchCodeFinal())
+        })
+    }
+  }
+  
+/**
+ *
+ * @param def Deferred
+ * @returns Thunk function
+ */
+ export function fetchStatus<T>(def: Deferred<T>) {
+    return (dispatch:dispatchFunc, _: () => any) => {
       dispatch(fetchCodeRequest())
       return def.promise
         .then(des => {

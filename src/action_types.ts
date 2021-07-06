@@ -7,4 +7,8 @@ export default class AuthFlowActions{
     static codeRequestFinal = 'auth_code_request_final'
     static codeRequestSuccess = 'auth_code_request_success'
     static codeRequestFailure  = 'auth_code_request_failure'
+    static statusRequest= 'auth_status_request'
+    static statusRequestFinal= 'auth_status_request_final'
+    static statusRequestSuccess = 'auth_status_request_success'
+    static statusRequestFailure = 'auth_status_request_failure'
 }

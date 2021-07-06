@@ -5,9 +5,8 @@ import chai from 'chai'
 const expect = chai.expect;
 import { applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
-import * as actions from './actions'
-import types from './action_types'
-import {Deferred} from "ts-deferred";
+import {deferred,fetchLogin,AuthFlowActions} from '../src'
+
 import fetch from 'node-fetch';
 
 const middlewares = [thunk];
@@ -67,8 +66,8 @@ describe('async actions', () => {
       .reply(200, { todos: ['do something'] });
 
     const expectedActions = [
-      { type: types.loginRequest },
-      { type: types.loginRequestSuccess, playload: { todos: ['do something']  } }
+      { type: AuthFlowActions.loginRequest },
+      { type: AuthFlowActions.loginRequestSuccess, playload: { todos: ['do something']  } }
     ]
     const store = mockStore({ todos: [] }, expectedActions, done);
     function login(){
@@ -77,14 +76,10 @@ describe('async actions', () => {
         // @ts-ignore
         },body:JSON.stringify({})}).then((res:Response) => res.json());
     }
-    function deferred<T>(success?:((value: T) => void | PromiseLike<void>) | null ,fails?:((reason: any) => void | PromiseLike<void>) | null ,final?:(() => void) | null){
-        let d: Deferred<T> = new Deferred<T>();
-        d.promise.then(success).catch(fails).finally(final)
-        return d
-    }
+    
     let dLogin = deferred(console.log)
     // @ts-ignore
-    store.dispatch(actions.fetchLogin(dLogin));
+    store.dispatch(fetchLogin(dLogin));
     dLogin.resolve(login())
 
 
