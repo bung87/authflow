@@ -45,21 +45,23 @@ function mockStore(getState:any, expectedActions:any[], onLastAction:()=>void) {
   return mockStoreWithMiddleware();
 }
 
+const nockServer =  nock('http://example.com/',{
+    reqheaders:{
+        'Content-Type':'application/json'
+    }
+})
+.defaultReplyHeaders({
+    'Content-Type': 'application/json',
+  })
+
 describe('async actions', () => {
   afterEach(() => {
     nock.cleanAll();
   });
 
   it('creates FETCH_TODO_SUCCESS when fetching todos has been done', (done) => {
-    nock('http://example.com/',{
-        reqheaders:{
-            'Content-Type':'application/json'
-        }
-    })
-    .defaultReplyHeaders({
-        'Content-Type': 'application/json',
-      })
-      .post('/login')
+   
+      nockServer.post('/login')
       .reply(200, { todos: ['do something'] });
 
     const expectedActions = [
