@@ -75,3 +75,27 @@ export function fetchLogin<T>(def: Deferred<T>) {
       })
   }
 }
+
+/**
+ *
+ * @param def Deferred
+ * @returns Thunk function
+ */
+ export function fetchCode<T>(def: Deferred<T>) {
+    return (dispatch: (action: AnyAction) => AnyAction, _: () => any) => {
+      dispatch(fetchCodeRequest())
+      return def.promise
+        .then(des => {
+          dispatch(fetchCodeSuccess(des))
+          def.resolve(des)
+        })
+        .catch(ex => {
+          dispatch(fetchCodeFailure(ex))
+          def.reject(ex)
+        })
+        .finally(() => {
+          dispatch(fetchCodeFinal())
+        })
+    }
+  }
+  
