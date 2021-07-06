@@ -1,38 +1,78 @@
 
 import AuthFlowActions from './action_types'
-import fetch from 'node-fetch';
+import {Deferred} from "ts-deferred";
+import { AnyAction } from 'redux';
 function fetchLoginRequest() {
     return {
       type: AuthFlowActions.loginRequest
     };
   }
+
+  function fetchLoginFinal() {
+    return {
+      type: AuthFlowActions.loginRequestFinal
+    };
+  }
   
-  function fetchLoginSuccess(body:any) {
+  function fetchLoginSuccess(playload:any) {
     return {
       type: AuthFlowActions.loginRequestSuccess,
-      body
+      playload
     };
   }
   
-  function fetchLoginFailure(ex:any) {
+  function fetchLoginFailure(playload:any) {
     return {
       type: AuthFlowActions.loginRequestFailure,
-      ex
+      playload
+    };
+  }
+
+  function fetchCodeRequest() {
+    return {
+      type: AuthFlowActions.codeRequest
+    };
+  }
+
+  function fetchCodeFinal() {
+    return {
+      type: AuthFlowActions.codeRequestFinal
     };
   }
   
-export function fetchLogin(data:any) {
-return (dispatch:any) => {
+  function fetchCodeSuccess(playload:any) {
+    return {
+      type: AuthFlowActions.codeRequestSuccess,
+      playload
+    };
+  }
+  
+  function fetchCodeFailure(playload:any) {
+    return {
+      type: AuthFlowActions.codeRequestFailure,
+      playload
+    };
+  }
+  
+  /**
+   * 
+   * @param def Deferred
+   * @returns Thunk function
+   */
+export function fetchLogin<T>(def:Deferred<T>) {
+return (dispatch:(action: AnyAction) => AnyAction,_:()=>any) => {
     dispatch(fetchLoginRequest());
-    return fetch('http://example.com/login',{method:'POST',headers:{
-        'Content-Type': 'application/json'
-    },body:JSON.stringify(data)})
-    // @ts-ignore
-    .then((res:Response) => res.json())
-    .then(json => dispatch({
-        type:AuthFlowActions.loginRequestSuccess,
-        playload:json
-    }))
-    // .catch(ex => dispatch(addLoginFailure(ex)));
+    return def.promise
+    .then(des => {
+        dispatch(fetchLoginSuccess(des));
+        def.resolve(des)
+    })
+    .catch(ex => {
+        dispatch(fetchLoginFailure(ex));
+        def.reject(ex)
+    })
+    .finally(() => {
+        dispatch(fetchLoginFinal())
+    })
 };
 }

@@ -7,6 +7,8 @@ import { applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import * as actions from './actions'
 import types from './action_types'
+import {Deferred} from "ts-deferred";
+import fetch from 'node-fetch';
 
 const middlewares = [thunk];
 
@@ -69,7 +71,38 @@ describe('async actions', () => {
       { type: types.loginRequestSuccess, playload: { todos: ['do something']  } }
     ]
     const store = mockStore({ todos: [] }, expectedActions, done);
+    function login(){
+        return fetch('http://example.com/login',{method:'POST',headers:{
+            'Content-Type': 'application/json'
+        // @ts-ignore
+        },body:JSON.stringify({})}).then((res:Response) => res.json());
+    }
+    function deferred<T>(success?:((value: T) => void | PromiseLike<void>) | null ,fails?:((reason: any) => void | PromiseLike<void>) | null ,final?:(() => void) | null){
+        let d: Deferred<T> = new Deferred<T>();
+        d.promise.then(success).catch(fails).finally(final)
+        return d
+    }
+    let dLogin = deferred(console.log)
     // @ts-ignore
-    store.dispatch(actions.fetchLogin({}));
+    store.dispatch(actions.fetchLogin(dLogin));
+    dLogin.resolve(login())
+
+
+    dLogin.promise.then( () =>{
+        let dCode = deferred(console.log)
+        // @ts-ignore
+        // store.dispatch(actions.fetchLogin(dLogin));
+        dCode.resolve(233)
+        return dCode.promise
+    }).then( (dVerCode) => {
+
+        let dCode = deferred(console.log)
+        // @ts-ignore
+        // store.dispatch(actions.fetchLogin(dLogin));
+        dCode.resolve(456)
+        return dCode.promise
+    })
+
+
   });
 });
