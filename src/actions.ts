@@ -55,30 +55,30 @@ function fetchCodeFailure(playload: any) {
 }
 
 function fetchStatusRequest() {
-    return {
-      type: AuthFlowActions.statusRequest,
-    }
+  return {
+    type: AuthFlowActions.statusRequest,
   }
-  
-  function fetchStatusFinal() {
-    return {
-      type: AuthFlowActions.statusRequestFinal,
-    }
+}
+
+function fetchStatusFinal() {
+  return {
+    type: AuthFlowActions.statusRequestFinal,
   }
-  
-  function fetchStatusSuccess(playload: any) {
-    return {
-      type: AuthFlowActions.statusRequestSuccess,
-      playload,
-    }
+}
+
+function fetchStatusSuccess(playload: any) {
+  return {
+    type: AuthFlowActions.statusRequestSuccess,
+    playload,
   }
-  
-  function fetchStatusFailure(playload: any) {
-    return {
-      type: AuthFlowActions.statusRequestFailure,
-      playload,
-    }
+}
+
+function fetchStatusFailure(playload: any) {
+  return {
+    type: AuthFlowActions.statusRequestFailure,
+    playload,
   }
+}
 
 /**
  *
@@ -108,44 +108,43 @@ export function fetchLogin<T>(def: Deferred<T>) {
  * @param def Deferred
  * @returns Thunk function
  */
- export function fetchCode<T>(def: Deferred<T>) {
-    return (dispatch: dispatchFunc) => {
-      dispatch(fetchCodeRequest())
-      return def.promise
-        .then(des => {
-          dispatch(fetchCodeSuccess(des))
-          def.resolve(des)
-        })
-        .catch(ex => {
-          dispatch(fetchCodeFailure(ex))
-          def.reject(ex)
-        })
-        .finally(() => {
-          dispatch(fetchCodeFinal())
-        })
-    }
+export function fetchCode<T>(def: Deferred<T>) {
+  return (dispatch: dispatchFunc) => {
+    dispatch(fetchCodeRequest())
+    return def.promise
+      .then(des => {
+        dispatch(fetchCodeSuccess(des))
+        def.resolve(des)
+      })
+      .catch(ex => {
+        dispatch(fetchCodeFailure(ex))
+        def.reject(ex)
+      })
+      .finally(() => {
+        dispatch(fetchCodeFinal())
+      })
   }
-  
+}
+
 /**
  *
  * @param def Deferred
  * @returns Thunk function
  */
- export function fetchStatus<T>(def: Deferred<T>) {
-    return (dispatch:dispatchFunc) => {
-      dispatch(fetchStatusRequest())
-      return def.promise
-        .then(des => {
-          dispatch(fetchStatusSuccess(des))
-          def.resolve(des)
-        })
-        .catch(ex => {
-          dispatch(fetchStatusFailure(ex))
-          def.reject(ex)
-        })
-        .finally(() => {
-          dispatch(fetchStatusFinal())
-        })
-    }
+export function fetchStatus<T>(def: Deferred<T>) {
+  return (dispatch: dispatchFunc) => {
+    dispatch(fetchStatusRequest())
+    return def.promise
+      .then(des => {
+        dispatch(fetchStatusSuccess(des))
+        def.resolve(des)
+      })
+      .catch(ex => {
+        dispatch(fetchStatusFailure(ex))
+        def.reject(ex)
+      })
+      .finally(() => {
+        dispatch(fetchStatusFinal())
+      })
   }
-  
+}
