@@ -71,7 +71,7 @@ describe('async actions', () => {
           // @ts-ignore
         },
         body: JSON.stringify({}),
-      }).then((res: Response) => res.json())
+      }).then((res: any) => res.json())
     }
 
     let dLogin = deferred(console.log)
