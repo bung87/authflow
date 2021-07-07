@@ -1,7 +1,7 @@
 import AuthFlowActions from './action_types'
 import { Deferred } from 'ts-deferred'
 // import { AnyAction } from 'redux'
-type dispatchFunc = (action: any) => any // (action: AnyAction) => AnyAction
+type DispatchFunc = (action: any) => any // (action: AnyAction) => AnyAction
 function fetchLoginRequest() {
   return {
     type: AuthFlowActions.loginRequest,
@@ -85,12 +85,13 @@ function fetchStatusFailure(playload: any) {
  * @param def Deferred
  * @returns Thunk function
  */
-export function fetchLogin<T>(def: Deferred<T>) {
-  return (dispatch: dispatchFunc) => {
+export function fetchLogin<T>(def: Deferred<T>,otherAction?:any) {
+  return (dispatch: DispatchFunc) => {
     dispatch(fetchLoginRequest())
     return def.promise
       .then(des => {
         dispatch(fetchLoginSuccess(des))
+        otherAction && dispatch(otherAction)
         def.resolve(des)
       })
       .catch(ex => {
@@ -108,12 +109,13 @@ export function fetchLogin<T>(def: Deferred<T>) {
  * @param def Deferred
  * @returns Thunk function
  */
-export function fetchCode<T>(def: Deferred<T>) {
-  return (dispatch: dispatchFunc) => {
+export function fetchCode<T>(def: Deferred<T>,otherAction?:any) {
+  return (dispatch: DispatchFunc) => {
     dispatch(fetchCodeRequest())
     return def.promise
       .then(des => {
         dispatch(fetchCodeSuccess(des))
+        otherAction && dispatch(otherAction)
         def.resolve(des)
       })
       .catch(ex => {
@@ -131,12 +133,13 @@ export function fetchCode<T>(def: Deferred<T>) {
  * @param def Deferred
  * @returns Thunk function
  */
-export function fetchStatus<T>(def: Deferred<T>) {
-  return (dispatch: dispatchFunc) => {
+export function fetchStatus<T>(def: Deferred<T>,otherAction?:any) {
+  return (dispatch: DispatchFunc) => {
     dispatch(fetchStatusRequest())
     return def.promise
       .then(des => {
         dispatch(fetchStatusSuccess(des))
+        otherAction && dispatch(otherAction)
         def.resolve(des)
       })
       .catch(ex => {
