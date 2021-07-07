@@ -74,21 +74,21 @@ describe('async actions', () => {
       }).then((res: any) => res.json())
     }
 
-    let dLogin = deferred(console.log)
+    const dLogin = deferred(console.log)
     // @ts-ignore
     store.dispatch(fetchLogin(dLogin))
     dLogin.resolve(login())
 
     dLogin.promise
       .then(() => {
-        let dCode = deferred(console.log)
+        const dCode = deferred(console.log)
         // @ts-ignore
         // store.dispatch(actions.fetchLogin(dLogin));
         dCode.resolve(233)
         return dCode.promise
       })
-      .then(dVerCode => {
-        let dCode = deferred(console.log)
+      .then( () => {
+        const dCode = deferred(console.log)
         // @ts-ignore
         // store.dispatch(actions.fetchLogin(dLogin));
         dCode.resolve(456)
